@@ -30,3 +30,22 @@ en caso salga error remote origin already exist
 ![](https://media.discordapp.net/attachments/893274242169331715/1062132961526427691/image.png)
 ![en el pass ponemos el token](https://media.discordapp.net/attachments/893274242169331715/1062133156028878888/image.png)
 ![](https://media.discordapp.net/attachments/893274242169331715/1062133314808451182/image.png)
+
+
+****
+**GITCLONE + GIT PULL**
+****
+
+- **git clone** -> se utiliza cuando queremos copiar todo el repositorio, se utiliza para copias de cero
+
+```bash
+-git clone "url"
+
+```
+
+- **git pull** -> se utiliza cuando quieres descargar los cambios, sirve cuando estas trabajando con otro compañero y quieres descargar la parte que modifico
+
+```bash
+-git pull origin master
+
+```
