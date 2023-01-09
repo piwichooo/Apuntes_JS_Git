@@ -1,0 +1,10 @@
+let nombre = "John";
+let apellido = "Monteagudo";
+let estudiante = nombre + " " + apellido;
+let estudianteMayus = estudiante.toUpperCase();
+let estudianteMinus = estudiante.toLowerCase();
+let NroEstudiante = estudiante.length;
+let Pestudiante = nombre[0];
+let Uestudiante = estudiante[estudiante.length - 1];
+let EspacioEstudiante = estudiante.trim().length;
+let EncontrarEstudiante = estudiante.includes(nombre);
