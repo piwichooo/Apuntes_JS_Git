@@ -4,6 +4,7 @@
 
 ```bash
 - git init
+-git commit -m "lo que sea"
 -git add .    - o si quieres solo un archivo git add "nombre del archivo"
 -git config user.name "nombre de tu github"
 -git config user.email "email"
@@ -21,5 +22,11 @@ en caso salga error remote origin already exist
 ```
 
 ****
-** **
+**Creando repositorio con Acces token**
 ****
+
+![](https://media.discordapp.net/attachments/893274242169331715/1062132726200799413/image.png?width=262&height=663)
+![](https://media.discordapp.net/attachments/893274242169331715/1062132887408885811/image.png?width=1153&height=662)
+![](https://media.discordapp.net/attachments/893274242169331715/1062132961526427691/image.png)
+![en el pass ponemos el token](https://media.discordapp.net/attachments/893274242169331715/1062133156028878888/image.png)
+![](https://media.discordapp.net/attachments/893274242169331715/1062133314808451182/image.png)
