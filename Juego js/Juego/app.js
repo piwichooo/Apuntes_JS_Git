@@ -4,7 +4,8 @@ const ctx=canvas.getContext('2d')
 const anchoCasilla=100//se refiere al 0 osea el ancho de escneario
 const altoCasilla=100//se refiere al alto
 const cielo='black'
-
+let colisionEnemigo=false
+let colisionNave=false
 
 const planetasArray=[]//aqui rellenaremos de planetas
 const arrayEnemigos=[]
@@ -13,11 +14,11 @@ const balasArray=[]
 
 
 
-function borrarCanvas(){//para actualizar canvas continuamente
+
     //medidas del canvas
     canvas.width=1000//ancho
     canvas.height=500//el alto
-    }
+    
 
 //borde del canvas
 canvas.style.border='1px solid black'
@@ -106,8 +107,21 @@ const nave=function(posX, posY,ancho,alto,color,velocidad){
     this.velocidad=velocidad;
 
     this.dibuja=function(){
-        ctx.fillStyle='blue'
-        ctx.fillRect(this.posX,this.posY,ancho,alto)
+    //  ctx.fillStyle='blue'
+    //  ctx.fillRect(this.posX,this.posY,ancho,alto)
+    
+    if(colisionNave){
+        let explota=new Image()
+        explota.src='./img/ExplosionPropia.png'
+        ctx.drawImage(explota,this.posX,this.posY,this.ancho,this.alto)
+        setTimeout(()=>{colisionNave=false},1000)
+    
+    }else{
+    
+    let fotoNave=new Image()
+    fotoNave.src='./img/naveTerminado.png'
+    ctx.drawImage(fotoNave,this.posX,this.posY,this.ancho,this.alto)
+    }
     }
 
     this.arriba=function(){
@@ -119,7 +133,7 @@ const nave=function(posX, posY,ancho,alto,color,velocidad){
         }
     }
     this.abajo=function(){
-        if(this.posY<=448){
+        if(this.posY<=500-50){
             this.posY+=10
             arrayBalasNave.map(balasNave=>{
                 balasNave.posY+=10
@@ -135,7 +149,7 @@ const nave=function(posX, posY,ancho,alto,color,velocidad){
         }
     }
     this.derecha=function(){
-        if(this.posX<=1000-52){
+        if(this.posX<=1000-55){
             this.posX+=10
             arrayBalasNave.map(balasNave=>{
                 balasNave.posX+=10
@@ -160,7 +174,9 @@ const proyectil=function(posX,posY,ancho,alto,color,velocidad){
 
     this.dibuja=function(){
         ctx.fillStyle=this.color
-        ctx.fillRect(this.posX,this.posY,this.ancho,this.alto)
+        let fotoNave= new Image()
+        fotoNave.src='./img/MiProyectil.png'
+        ctx.drawImage(fotoNave,this.posX,this.posY,this.ancho,this.alto)
     }
 
     this.dispara=function(){
@@ -193,8 +209,11 @@ const proyectilArriba=function(posX,posY,ancho,alto,color,velocidad){
     this.velocidad=velocidad;
 
     this.dibuja=function(){
-        ctx.fillStyle=this.color
-        ctx.fillRect(this.posX,this.posY,this.ancho,this.alto)
+        //ctx.fillStyle=this.color
+        //ctx.fillRect(this.posX,this.posY,this.ancho,this.alto)
+        let proyectil=new Image()
+        proyectil.src='./img/MiProyectil.png'
+        ctx.drawImage(proyectil,this.posX,this.posY,this.ancho,this.alto)
     }
 
     this.dispara=function(){
@@ -228,8 +247,11 @@ const proyectilAbajo=function(posX,posY,ancho,alto,color,velocidad){
     this.velocidad=velocidad;
 
     this.dibuja=function(){
-        ctx.fillStyle=this.color
-        ctx.fillRect(this.posX,this.posY,this.ancho,this.alto)
+        //ctx.fillStyle=this.color
+        //ctx.fillRect(this.posX,this.posY,this.ancho,this.alto)
+        let proyectilAbajo=new Image()
+        proyectilAbajo.src='./img/MiProyectil.png'
+        ctx.drawImage(proyectilAbajo,this.posX,this.posY,this.ancho,this.alto)
     }
 
     this.dispara=function(){
@@ -264,8 +286,11 @@ const enemigos=function(posX, posY,ancho,alto,color,velocidad){
     this.velocidad=velocidad;
 
     this.dibuja=function(){
-        ctx.fillStyle=this.color
-        ctx.fillRect(this.posX,this.posY,ancho,alto)
+        //ctx.fillStyle=this.color
+        //ctx.fillRect(this.posX,this.posY,ancho,alto)
+        let enemigoImg=new Image()
+        enemigoImg.src='./img/naveEnemiga.png'
+        ctx.drawImage(enemigoImg,this.posX,this.posY,this.ancho,this.alto)
     }
     this.mover=function(){
         this.posX-=2+this.velocidad
@@ -289,8 +314,11 @@ const proyectilEnemigo=function(posX, posY,ancho,alto,color,velocidad){
     this.velocidad=velocidad;
 
     this.dibuja=function(){
-        ctx.fillStyle=this.color
-        ctx.fillRect(this.posX,this.posY,ancho,alto)
+       // ctx.fillStyle=this.color
+        //ctx.fillRect(this.posX,this.posY,ancho,alto)
+        let enemigoProyectil=new Image()
+        enemigoProyectil.src='./img/proyectilEnemigo.png'
+        ctx.drawImage(enemigoProyectil,this.posX,this.posY,this.ancho,this.alto)
     }
     this.dispara=function(){
         this.posX-=20
@@ -330,8 +358,130 @@ balasArray.push(new proyectilEnemigo(1100,random6+19,10,10,'white',3.5))
 balasArray.push(new proyectilEnemigo(1100,random7+19,10,10,'white',1.75))
 balasArray.push(new proyectilEnemigo(1100,random8+19,10,10,'white',0.4))
 
+//Marcador
+
+const puntuacion=document.querySelector('#puntuacion')//conecta con html
+const vidas=document.querySelector('#vidas')
+const record=document.querySelector('#record')
+
+let puntuacionVariable=0//creamos variables
+let vidaVariable=10
+let recordVariable=0
+
+puntuacion.textContent=puntuacionVariable//asignamos
+vidas.textContent=vidaVariable 
+record.textContent=localStorage.getItem('record') 
 
 
+
+
+
+
+
+//colisiones
+
+function colisiones(){
+    arrayEnemigos.map(arrayEnemigo=>{//tengo acceso a todo eso de arriba, balasarray.push
+        balasArray.map(balaArray=>{//arrayenemigos.push
+             //nuestros proyectiles chocan con los enemigos 
+          //hacemos un mapeo del array que contiene mis 
+          //proyectiles
+
+
+        arrayBalasNave.map(arrayBalaNave=>{
+
+            if(arrayBalaNave.posX+10>=arrayEnemigo.posX&& 
+            arrayBalaNave.posY>=arrayEnemigo.posY && 
+            arrayBalaNave.posY<=arrayEnemigo.posY+50 && 
+            arrayBalaNave.posX<=arrayEnemigo.posX+50){
+    
+                arrayEnemigo.posX=1200
+                arrayBalaNave.posX=naveInstancia.posX+22
+            
+                colisionEnemigo=true
+    
+                explosion.play()
+    
+                puntuacion.textContent=puntuacionVariable +=1
+                
+                puntuacionVariable+=1
+
+                //  if(puntuacionVariable>50){
+                //      window.location.href='./nivel2/index.html'
+                //  }
+        
+                
+            }
+            
+            
+            })
+        
+
+ //colision nave con los enemigos
+
+if(naveInstancia.posX+50>=arrayEnemigo.posX && 
+    naveInstancia.posY>=arrayEnemigo.posY && 
+    naveInstancia.posY<=arrayEnemigo.posY+50){
+        
+    
+        arrayEnemigo.posX=1200
+        
+        vidas.textContent=vidaVariable-=1
+        colisionEnemigo=true
+        colisionNave=true
+
+        if(vidaVariable<=0){
+            vidas.textContent=0
+        window.location.href='./gameover.html'
+
+            if(puntuacionVariable>recordValue){
+                localStorage.setItem('record',puntuacionVariable)
+            }
+        }
+        
+    }
+
+    
+    //colisiones con balas enemigas 
+
+
+    if(naveInstancia.posX+50>=balaArray.posX && 
+        naveInstancia.posY>=balaArray.posY && 
+        naveInstancia.posY<=balaArray.posY+10){
+        
+            vidas.textContent=vidaVariable-=1
+    
+            balaArray.posX=1200
+            colisionNave=true
+            nosColisionan.play()
+        
+        
+        
+            if(vidaVariable<=0){
+                vidas.textContent=0
+            window.location.href='./gameover.html'
+
+                
+    if(puntuacionVariable>recordVariable){
+        localStorage.setItem('record',puntuacionVariable)
+    }
+
+            }
+        
+
+        }
+
+
+
+
+
+})
+})
+
+
+
+}
+colisiones()
 
 
 
@@ -354,16 +504,36 @@ document.addEventListener('keydown', (e)=>{
     }
     if(e.key===' '){
         balaNave.dispara()
+        disparo.play()
     }
     if(e.key==='e'){
         balaNaveArriba.dispara()
+        disparo.play()
     }
     if(e.key==='q'){
         balaNaveAbajo.dispara()
+        disparo.play()
     }
 })
 
+//Audios 
 
+const disparo=new Audio()
+disparo.src='./audio/disparo.mp3'
+
+const explosion=new Audio()
+explosion.src='./audio/explosionEnemigo.mp3'
+
+const nosColisionan=new Audio()
+nosColisionan.src='./audio/nosColisionan.mp3'
+
+
+
+function borrarCanvas(){//para actualizar canvas continuamente
+    //medidas del canvas
+    canvas.width=1000//ancho
+    canvas.height=500//el alto
+    }
 
 
 //funcion principal, qie ejecutara el juego - bucle
@@ -371,17 +541,17 @@ function principal(){
     requestAnimationFrame(principal)//repetira todo el rato
     borrarCanvas()
 
+    colisiones()
     dibujaEscenario()
-    naveInstancia.dibuja()
+    
 
-    balaNave.dibuja()
+   
     balaNaveArriba.dibuja()
     balaNaveAbajo.dibuja()
+    balaNave.dibuja()
+    naveInstancia.dibuja()
 
-    for(i=0;i<arrayEnemigos.length;i++){
-        arrayEnemigos[i].dibuja()
-        arrayEnemigos[i].mover()
-    }
+
 
 
     for(let i=0; i <planetasArray.length;i++){//recorrer los planetas
@@ -389,11 +559,13 @@ function principal(){
         planetasArray[i].mover()
     }
 
+
+
     for (let i=0; i<balasArray.length;i++){
         balasArray[i].dibuja()
 
         if(naveInstancia.posY>=arrayEnemigos[i].posY -50 && 
-           naveInstancia.posY<=arrayEnemigos[i].posY + 100 )//radar que detecta para que el enemigo dispare - -50 , +100 amplia el rango
+        naveInstancia.posY<=arrayEnemigos[i].posY + 100 )//radar que detecta para que el enemigo dispare - -50 , +100 amplia el rango
             {
                 balasArray[i].dispara()
         }else {
@@ -402,6 +574,11 @@ function principal(){
         }
 
 
+    }
+
+    for(i=0;i<arrayEnemigos.length;i++){
+        arrayEnemigos[i].dibuja()
+        arrayEnemigos[i].mover()
     }
 
 }
